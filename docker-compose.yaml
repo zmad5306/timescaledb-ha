@@ -1,6 +1,6 @@
 version: "3.8"
 x-postgres-common: &postgres-common
-  image: postgres:16-alpine
+  image: timescale/timescaledb-ha:pg16.4-ts2.17.0-all-oss
   user: postgres
   restart: always
   healthcheck:
@@ -39,7 +39,7 @@ services:
       PGPASSWORD: replicator_password
     command: |
       bash -c "
-      until pg_basebackup --pgdata=/var/lib/postgresql/data -R --slot=replication_slot --host=postgres_primary --port=5432
+      until pg_basebackup --pgdata=/home/postgres/pgdata/data -R --slot=replication_slot --host=postgres_primary --port=5432
       do
       echo 'Waiting for primary to connect...'
       sleep 1s
